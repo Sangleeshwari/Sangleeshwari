@@ -1,0 +1,30 @@
+import requests
+from requests.auth import HTTPBasicAuth
+
+# Replace these with your details
+username = 'yourusername'
+token = 'youraccesstoken'
+repo = 'yourusername/MyGitHubProject'
+
+# Create an issue
+def create_github_issue(title, body=None, labels=None):
+    url = f'https://api.github.com/repos/{repo}/issues'
+    session = requests.Session()
+    session.auth = (username, token)
+
+    issue = {'title': title}
+    if body:
+        issue['body'] = body
+    if labels:
+        issue['labels'] = labels
+
+    response = session.post(url, json=issue)
+
+    if response.status_code == 201:
+        print('Successfully created Issue:', title)
+    else:
+        print('Could not create Issue:', title)
+        print('Response:', response.content)
+
+# Example usage
+create_github_issue('Issue Title', 'This is the issue body', ['bug'])
